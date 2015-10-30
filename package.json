@@ -1,0 +1,30 @@
+{
+  "name": "producthunt",
+  "version": "0.1.0",
+  "description": "Node wrapper for Product Hunt API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sungwoncho/node-producthunt.git"
+  },
+  "keywords": [
+    "producthunt",
+    "api"
+  ],
+  "author": "Sung Won Cho <mikeswcho@gmail.com> (https://sungwoncho.io/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sungwoncho/node-producthunt/issues"
+  },
+  "homepage": "https://github.com/sungwoncho/node-producthunt#readme",
+  "devDependencies": {
+    "chai": "^3.4.0",
+    "mocha": "^2.3.3"
+  },
+  "dependencies": {
+    "request": "^2.65.0"
+  }
+}
