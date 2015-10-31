@@ -18,16 +18,22 @@ var Client = module.exports = function (config) {
     this.credentials.code = config.code;
   }
 
-  this.constructEndpoint = function(path) {
-    var base = `${this.protocol}://${this.host}`;
-    var route = `${this.pathPrefix}${path}`;
+  this.setupAPI();
+};
 
-    return `${base}${route}`;
-  };
+Client.prototype.setupAPI = function () {
+  this.posts = require(`./api/v${this.version}/posts`)(this);
+};
+
+Client.prototype.getEndpoint = function(path) {
+  var base = `${this.protocol}://${this.host}`;
+  var route = `${this.pathPrefix}${path}`;
+
+  return `${base}${route}`;
 };
 
 Client.prototype.authenticate = function (done) {
-  var endpoint = this.constructEndpoint('/oauth/token');
+  var endpoint = this.getEndpoint('/oauth/token');
   var options = {
     url: endpoint,
     headers: {
@@ -47,8 +53,31 @@ Client.prototype.authenticate = function (done) {
     if (res.statusCode === 200) {
       done(null, body.access_token);
     } else {
+      //TODO: JSON.stringify?
       var error = res.body;
       done(error);
     }
+  });
+};
+
+Client.prototype.sendGetRequest = function (path, params, done) {
+  var endpoint = this.getEndpoint(path);
+  this.authenticate(function (err, access_token) {
+    var options = {
+      url: endpoint,
+      qs: params,
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${access_token}`,
+        'Host': 'api.producthunt.com'
+      },
+    };
+
+    request.get(options, (err, res, body) => {
+      if (err) done(err);
+
+      done(null, res);
+    });
   });
 };
