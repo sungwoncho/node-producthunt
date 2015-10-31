@@ -23,6 +23,7 @@ var Client = module.exports = function (config) {
 
 Client.prototype.setupAPI = function () {
   this.posts = require(`./api/v${this.version}/posts`)(this);
+  this.users = require(`./api/v${this.version}/users`)(this);
 };
 
 Client.prototype.getEndpoint = function(path) {
