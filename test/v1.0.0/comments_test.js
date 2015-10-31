@@ -3,9 +3,9 @@ var nock = require('nock');
 var sinon = require('sinon');
 
 var Client = require('../../index');
-var collections = require('../../api/v1.0.0/collections')();
+var comments = require('../../api/v1.0.0/comments')();
 
-describe("collections", function() {
+describe("comments", function() {
   beforeEach(function() {
     // Stub authenticate to be always successful
     sinon.stub(Client.prototype, 'authenticate', function (done) {
@@ -21,10 +21,10 @@ describe("collections", function() {
   describe("#index", function() {
     it("can be called without options", function(done) {
       nock('https://api.producthunt.com/v1')
-        .get('/collections')
+        .get('/comments')
         .reply(200);
 
-      collections.index(function (err, res) {
+      comments.index(function (err, res) {
         expect(res.statusCode).to.equal(200);
         done();
       });
@@ -32,47 +32,66 @@ describe("collections", function() {
 
     it("can be called with params", function(done) {
       var params = {
-        newer: 1
+        newer: 3
+      };
+      var options = {
+        params: params
       };
 
       nock('https://api.producthunt.com/v1')
-        .get('/collections')
+        .get('/comments')
         .query(params)
         .reply(200);
 
-      collections.index({params: params}, function (err, res) {
+      comments.index(options, function (err, res) {
         expect(err).to.equal(null);
         expect(res.statusCode).to.equal(200);
         done();
       });
     });
 
-    it("can get all collections by a user", function(done) {
+    it("can fetch comments of a user", function(done) {
       var options = {
         user_id: 1
       };
 
       nock('https://api.producthunt.com/v1')
-        .get(`/users/${options.user_id}/collections`)
+        .get('/users/1/comments')
         .reply(200);
 
-      collections.index(options, function (err, res) {
+      comments.index(options, function (err, res) {
         expect(err).to.equal(null);
         expect(res.statusCode).to.equal(200);
         done();
       });
     });
 
-    it("can get all collections including a post", function(done) {
+    it("can fetch all threads of a post", function(done) {
       var options = {
         post_id: 1
       };
 
       nock('https://api.producthunt.com/v1')
-        .get(`/posts/${options.post_id}/collections`)
+        .get('/posts/1/comments')
         .reply(200);
 
-      collections.index(options, function (err, res) {
+      comments.index(options, function (err, res) {
+        expect(err).to.equal(null);
+        expect(res.statusCode).to.equal(200);
+        done();
+      });
+    });
+
+    it("can fetch all threads of a live event", function(done) {
+      var options = {
+        live_event_id: 1
+      };
+
+      nock('https://api.producthunt.com/v1')
+        .get('/live/1/comments')
+        .reply(200);
+
+      comments.index(options, function (err, res) {
         expect(err).to.equal(null);
         expect(res.statusCode).to.equal(200);
         done();
@@ -83,38 +102,19 @@ describe("collections", function() {
   describe("#create", function() {
     it("is successful", function(done) {
       var options = {
-        name: 'Digital Nomad Essentials',
-        title: 'Digital Nomad Essentials',
-        color: 'green'
+        body: 'new comment',
+        post_id: 1
       };
 
       nock('https://api.producthunt.com/v1')
-        .post(`/collections`, {
-          collection: options
+        .post('/comments', {
+          comment: options
         })
         .reply(201);
 
-      collections.create(options, function (err, res) {
+      comments.create(options, function (err, res) {
         expect(err).to.equal(null);
         expect(res.statusCode).to.equal(201);
-        done();
-      });
-    });
-  });
-
-  describe("#show", function() {
-    it("is successful", function(done) {
-      var options = {
-        id: 1
-      };
-
-      nock('https://api.producthunt.com/v1')
-        .get(`/collections/${options.id}`)
-        .reply(200);
-
-      collections.show(options, function (err, res) {
-        expect(err).to.equal(null);
-        expect(res.statusCode).to.equal(200);
         done();
       });
     });
@@ -123,41 +123,19 @@ describe("collections", function() {
   describe("#update", function() {
     it("is successful", function(done) {
       var options = {
-        id: 1,
-        name: 'New name',
-        title: 'New title',
-        color: 'blue'
+        comment_id: 1,
+        body: 'new comment'
       };
 
       nock('https://api.producthunt.com/v1')
-        .put(`/collections/${options.id}`, {
-          collection: {
-            name: 'New name',
-            title: 'New title',
-            color: 'blue'
+        .put('/comments/1', {
+          comment: {
+            body: options.body,
           }
         })
         .reply(200);
 
-      collections.update(options, function (err, res) {
-        expect(err).to.equal(null);
-        expect(res.statusCode).to.equal(200);
-        done();
-      });
-    });
-  });
-
-  describe("#destroy", function() {
-    it("is successful", function(done) {
-      var options = {
-        id: 1
-      };
-
-      nock('https://api.producthunt.com/v1')
-        .delete(`/collections/${options.id}`)
-        .reply(200);
-
-      collections.destroy(options, function (err, res) {
+      comments.update(options, function (err, res) {
         expect(err).to.equal(null);
         expect(res.statusCode).to.equal(200);
         done();
