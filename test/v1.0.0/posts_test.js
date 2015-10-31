@@ -5,7 +5,7 @@ var sinon = require('sinon');
 var Client = require('../../index');
 var posts = require('../../api/v1.0.0/posts')();
 
-describe("posts#index", function() {
+describe("posts", function() {
   beforeEach(function() {
     // Stub authenticate to be always successful
     sinon.stub(Client.prototype, 'authenticate', function (done) {
@@ -18,29 +18,94 @@ describe("posts#index", function() {
     Client.prototype.authenticate.restore();
   });
 
-  it("is successful", function(done) {
-    nock('https://api.producthunt.com/v1')
-      .get('/posts')
-      .reply(200);
+  describe("#index", function() {
+    it("is successful", function(done) {
+      nock('https://api.producthunt.com/v1')
+        .get('/posts')
+        .reply(200);
 
-    posts.index(function (err, res) {
-      expect(res.statusCode).to.equal(200);
-      done();
+      posts.index(function (err, res) {
+        expect(res.statusCode).to.equal(200);
+        done();
+      });
+    });
+
+    it("can specify category name", function(done) {
+      nock('https://api.producthunt.com/v1')
+        .get('/categories/games/posts')
+        .reply(200);
+
+      var options = {
+        category_name: 'games'
+      };
+
+      posts.index(options, function (err, res) {
+        expect(res.statusCode).to.equal(200);
+        done();
+      });
     });
   });
 
-  it("can specify category name", function(done) {
-    nock('https://api.producthunt.com/v1')
-      .get('/categories/games/posts')
-      .reply(200);
+  describe("#all", function() {
+    it("is successful", function(done) {
+      nock('https://api.producthunt.com/v1')
+        .get('/posts/all')
+        .reply(200);
 
-    var options = {
-      category_name: 'games'
-    };
+      posts.all(function (err, res) {
+        expect(res.statusCode).to.equal(200);
+        done();
+      });
+    });
 
-    posts.index(options, function (err, res) {
-      expect(res.statusCode).to.equal(200);
-      done();
+    it("can pass params", function(done) {
+      nock('https://api.producthunt.com/v1')
+        .get('/posts/all')
+        .query({newer: 1})
+        .reply(200);
+
+      var options = {
+        params: {
+          newer: 1
+        }
+      };
+
+      posts.all(options, function (err, res) {
+        expect(res.statusCode).to.equal(200);
+        done();
+      });
+    });
+
+    it("can get posts created by a user", function(done) {
+      nock('https://api.producthunt.com/v1')
+        .get('/users/4/posts')
+        .reply(200);
+
+      var options = {
+        user: 4,
+        type: 'posts'
+      };
+
+      posts.all(options, function (err, res) {
+        expect(res.statusCode).to.equal(200);
+        done();
+      });
+    });
+
+    it("can get posts made by a user", function(done) {
+      nock('https://api.producthunt.com/v1')
+        .get('/users/4/products')
+        .reply(200);
+
+      var options = {
+        user: 4,
+        type: 'products'
+      };
+
+      posts.all(options, function (err, res) {
+        expect(res.statusCode).to.equal(200);
+        done();
+      });
     });
   });
 });

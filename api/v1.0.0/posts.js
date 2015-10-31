@@ -31,6 +31,21 @@ module.exports = function(client) {
     } else {
       path = '/posts';
     }
+    client.sendGetRequest(path, options.params, done);
+  };
+
+  posts.all = function (options, done) {
+    if (typeof options === 'function') {
+      done = options;
+      options = {};
+    }
+
+    var path;
+    if (options.user) {
+      path = `/users/${options.user}/${options.type}`;
+    } else {
+      path = '/posts/all';
+    }
 
     client.sendGetRequest(path, options.params, done);
   };
