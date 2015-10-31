@@ -27,11 +27,11 @@ describe("subscribe", function() {
 
       nock('https://api.producthunt.com/v1')
         .post(`/collections/${options.collection_id}/subscribe`)
-        .reply(200);
+        .reply(201);
 
       subscribe.create(options, function (err, res) {
         expect(err).to.equal(null);
-        expect(res.statusCode).to.equal(200);
+        expect(res.statusCode).to.equal(201);
         done();
       });
     });
@@ -46,11 +46,27 @@ describe("subscribe", function() {
         .post(`/collections/${options.collection_id}/subscribe`, {
           email:'some@email.io'
         })
-        .reply(200);
+        .reply(201);
 
       subscribe.create(options, function (err, res) {
         expect(err).to.equal(null);
-        expect(res.statusCode).to.equal(200);
+        expect(res.statusCode).to.equal(201);
+        done();
+      });
+    });
+
+    it("can be called with live_id", function(done) {
+      var options = {
+        live_id: 1
+      };
+
+      nock('https://api.producthunt.com/v1')
+        .post(`/live/${options.live_id}/subscribe`)
+        .reply(201);
+
+      subscribe.create(options, function (err, res) {
+        expect(err).to.equal(null);
+        expect(res.statusCode).to.equal(201);
         done();
       });
     });
@@ -83,6 +99,22 @@ describe("subscribe", function() {
         .delete(`/collections/${options.collection_id}/subscribe`, {
           email:'some@email.io'
         })
+        .reply(204);
+
+      subscribe.destroy(options, function (err, res) {
+        expect(err).to.equal(null);
+        expect(res.statusCode).to.equal(204);
+        done();
+      });
+    });
+
+    it("can be called with live_id", function(done) {
+      var options = {
+        live_id: 1
+      };
+
+      nock('https://api.producthunt.com/v1')
+        .delete(`/live/${options.live_id}/subscribe`)
         .reply(204);
 
       subscribe.destroy(options, function (err, res) {

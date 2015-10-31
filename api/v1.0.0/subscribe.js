@@ -14,7 +14,11 @@ function getOption(options) {
 }
 
 function getPath(options) {
-  return `/collections/${options.collection_id}/subscribe`;
+  if (options.collection_id) {
+    return `/collections/${options.collection_id}/subscribe`;
+  } else if (options.live_id) {
+    return `/live/${options.live_id}/subscribe`;
+  }
 }
 
 module.exports = function (client) {
