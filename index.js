@@ -26,6 +26,7 @@ Client.prototype.setupAPI = function () {
   this.users = require(`./api/v${this.version}/users`)(this);
   this.collections = require(`./api/v${this.version}/collections`)(this);
   this.comments = require(`./api/v${this.version}/comments`)(this);
+  this.notifications = require(`./api/v${this.version}/notifications`)(this);
 };
 
 Client.prototype.getEndpoint = function(path) {
