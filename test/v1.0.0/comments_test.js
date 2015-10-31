@@ -142,4 +142,80 @@ describe("comments", function() {
       });
     });
   });
+
+  describe("votes", function() {
+    describe("#index", function() {
+      it("is successful", function(done) {
+        var options = {
+          comment_id: 1
+        };
+
+        nock('https://api.producthunt.com/v1')
+          .get('/comments/1/votes')
+          .reply(200);
+
+        comments.votes.index(options, function (err, res) {
+          expect(err).to.equal(null);
+          expect(res.statusCode).to.equal(200);
+          done();
+        });
+      });
+
+      it("can be called with params", function(done) {
+        var options = {
+          comment_id: 1,
+          params: {
+            newer: 3
+          }
+        };
+
+        nock('https://api.producthunt.com/v1')
+          .get('/comments/1/votes')
+          .query({newer: 3})
+          .reply(200);
+
+        comments.votes.index(options, function (err, res) {
+          expect(err).to.equal(null);
+          expect(res.statusCode).to.equal(200);
+          done();
+        });
+      });
+    });
+
+    describe("#create", function() {
+      it("is successful", function(done) {
+        var options = {
+          comment_id: 1
+        };
+
+        nock('https://api.producthunt.com/v1')
+          .post('/comments/1/vote')
+          .reply(200);
+
+        comments.votes.create(options, function (err, res) {
+          expect(err).to.equal(null);
+          expect(res.statusCode).to.equal(200);
+          done();
+        });
+      });
+    });
+
+    describe("#destroy", function() {
+      it("is successful", function(done) {
+        var options = {
+          comment_id: 1
+        };
+
+        nock('https://api.producthunt.com/v1')
+          .delete('/comments/1/vote')
+          .reply(200);
+
+        comments.votes.destroy(options, function (err, res) {
+          expect(err).to.equal(null);
+          expect(res.statusCode).to.equal(200);
+          done();
+        });
+      });
+    });
+  });
 });

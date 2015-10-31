@@ -1,5 +1,6 @@
 var request = require('request');
 var comments = {};
+comments.votes = {};
 
 module.exports = function (client) {
   comments.index = function (options, done) {
@@ -51,6 +52,18 @@ module.exports = function (client) {
     };
 
     client.httpPut(`/comments/${options.comment_id}`, opts, done);
+  };
+
+  comments.votes.index = function (options, done) {
+    client.httpGet(`/comments/${options.comment_id}/votes`, options.params, done);
+  };
+
+  comments.votes.create = function (options, done) {
+    client.httpPost(`/comments/${options.comment_id}/vote`, {}, done);
+  };
+
+  comments.votes.destroy = function (options, done) {
+    client.httpDelete(`/comments/${options.comment_id}/vote`, {}, done);
   };
 
   return comments;
