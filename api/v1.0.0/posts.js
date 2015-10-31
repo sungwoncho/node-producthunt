@@ -50,5 +50,14 @@ module.exports = function(client) {
     client.sendGetRequest(path, options.params, done);
   };
 
+  posts.show = function (options, done) {
+    if (typeof options === 'function') {
+      done = options;
+      options = {};
+    }
+
+    client.sendGetRequest(`/posts/${options.id}`, {}, done);
+  };
+
   return posts;
 };

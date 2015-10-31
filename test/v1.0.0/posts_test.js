@@ -108,4 +108,21 @@ describe("posts", function() {
       });
     });
   });
+
+  describe("#show", function() {
+    it("is successful", function(done) {
+      nock('https://api.producthunt.com/v1')
+        .get('/posts/1')
+        .reply(200);
+
+      var options = {
+        id: 1
+      };
+
+      posts.show(options, function (err, res) {
+        expect(res.statusCode).to.equal(200);
+        done();
+      });
+    });
+  });
 });
