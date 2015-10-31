@@ -60,12 +60,14 @@ Client.prototype.authenticate = function (done) {
   });
 };
 
-Client.prototype.sendGetRequest = function (path, params, done) {
+Client.prototype._sendHttpRequest = function (method, path, options, done) {
   var endpoint = this.getEndpoint(path);
-  this.authenticate(function (err, access_token) {
-    var options = {
+  this.authenticate(function (error, access_token) {
+    if (error) return done(error);
+
+    var opts = {
       url: endpoint,
-      qs: params,
+      method: method,
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
@@ -74,10 +76,31 @@ Client.prototype.sendGetRequest = function (path, params, done) {
       },
     };
 
-    request.get(options, (err, res, body) => {
-      if (err) done(err);
+    if (options.params) {
+      opts.qs = options.params;
+    }
+
+    if (options.body) {
+      opts.json = true;
+      opts.body = options.body;
+    }
+
+    request(opts, (err, res) => {
+      if (err) return done(err);
 
       done(null, res);
     });
   });
+};
+
+Client.prototype.httpGet = function (path, params, done) {
+  var options = {
+    params: params
+  };
+
+  this._sendHttpRequest('GET', path, options, done);
+};
+
+Client.prototype.httpPost = function (path, options, done) {
+  this._sendHttpRequest('POST', path, options, done);
 };

@@ -31,7 +31,7 @@ module.exports = function(client) {
     } else {
       path = '/posts';
     }
-    client.sendGetRequest(path, options.params, done);
+    client.httpGet(path, options.params, done);
   };
 
   posts.all = function (options, done) {
@@ -47,7 +47,7 @@ module.exports = function(client) {
       path = '/posts/all';
     }
 
-    client.sendGetRequest(path, options.params, done);
+    client.httpGet(path, options.params, done);
   };
 
   posts.show = function (options, done) {
@@ -56,7 +56,21 @@ module.exports = function(client) {
       options = {};
     }
 
-    client.sendGetRequest(`/posts/${options.id}`, {}, done);
+    client.httpGet(`/posts/${options.id}`, {}, done);
+  };
+
+  posts.create = function (options, done) {
+    var opts = {
+      body: {
+        post: {
+          url: options.url,
+          name: options.name,
+          tagline: options.tagline
+        }
+      }
+    };
+
+    client.httpPost('/posts', opts, done);
   };
 
   return posts;

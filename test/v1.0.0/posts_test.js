@@ -125,4 +125,24 @@ describe("posts", function() {
       });
     });
   });
+
+  describe("#create", function() {
+    it("is successful", function(done) {
+      var options = {
+        url: 'coddee.io',
+        name: 'Coddee',
+        tagline: 'Code review made easy'
+      };
+
+      nock('https://api.producthunt.com/v1')
+        .post('/posts')
+        .reply(201);
+
+      posts.create(options, function (err, res) {
+        expect(err).to.equal(null);
+        expect(res.statusCode).to.equal(201);
+        done();
+      });
+    });
+  });
 });
