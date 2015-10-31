@@ -73,5 +73,21 @@ module.exports = function(client) {
     client.httpPost('/posts', opts, done);
   };
 
+  posts.collect = function (options, done) {
+    var opts = {
+      body: {
+        collection_id: options.collection_id
+      }
+    };
+
+    var path = `/posts/${options.post_id}/collect`;
+
+    if (options.type === 'add') {
+      client.httpPost(path, opts, done);
+    } else if (options.type === 'remove') {
+      client.httpDelete(path, opts, done);
+    }
+  };
+
   return posts;
 };

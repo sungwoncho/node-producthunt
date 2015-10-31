@@ -104,3 +104,7 @@ Client.prototype.httpGet = function (path, params, done) {
 Client.prototype.httpPost = function (path, options, done) {
   this._sendHttpRequest('POST', path, options, done);
 };
+
+Client.prototype.httpDelete = function (path, options, done) {
+  this._sendHttpRequest('DELETE', path, options, done);
+};

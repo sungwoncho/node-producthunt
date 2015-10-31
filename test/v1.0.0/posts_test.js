@@ -135,12 +135,56 @@ describe("posts", function() {
       };
 
       nock('https://api.producthunt.com/v1')
-        .post('/posts')
+        .post('/posts', {
+          post: options
+        })
         .reply(201);
 
       posts.create(options, function (err, res) {
         expect(err).to.equal(null);
         expect(res.statusCode).to.equal(201);
+        done();
+      });
+    });
+  });
+
+  describe("#collect", function() {
+    it("can add a post to a collection", function(done) {
+      var options = {
+        post_id: 1,
+        collection_id: 1,
+        type: 'add'
+      };
+
+      nock('https://api.producthunt.com/v1')
+        .post('/posts/1/collect', {
+          collection_id: 1
+        })
+        .reply(201);
+
+      posts.collect(options, function (err, res) {
+        expect(err).to.equal(null);
+        expect(res.statusCode).to.equal(201);
+        done();
+      });
+    });
+
+    it("can remove a post from a collection", function(done) {
+      var options = {
+        post_id: 1,
+        collection_id: 1,
+        type: 'remove'
+      };
+
+      nock('https://api.producthunt.com/v1')
+        .delete('/posts/1/collect', {
+          collection_id: 1
+        })
+        .reply(200);
+
+      posts.collect(options, function (err, res) {
+        expect(err).to.equal(null);
+        expect(res.statusCode).to.equal(200);
         done();
       });
     });
