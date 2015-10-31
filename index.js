@@ -33,6 +33,7 @@ Client.prototype.setupAPI = function () {
   this.followers = require(`./api/v${this.version}/followers`)(this);
   this.currentUser = require(`./api/v${this.version}/current_user`)(this);
   this.categories = require(`./api/v${this.version}/categories`)(this);
+  this.live = require(`./api/v${this.version}/live`)(this);
 };
 
 Client.prototype.getEndpoint = function(path) {
