@@ -1,5 +1,7 @@
 # node-producthunt
 
+[![Build Status](https://travis-ci.org/sungwoncho/node-producthunt.svg?branch=master)](https://travis-ci.org/sungwoncho/node-producthunt)
+
 node.js wrapper for the Product Hunt API
 
 
