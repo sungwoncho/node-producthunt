@@ -1,7 +1,7 @@
 {
   "name": "producthunt",
   "version": "0.1.0",
-  "description": "Node wrapper for Product Hunt API",
+  "description": "node.js wrapper for the Product Hunt API",
   "main": "index.js",
   "scripts": {
     "test": "mocha ./test/v1.0.0"
@@ -14,6 +14,9 @@
     "producthunt",
     "api"
   ],
+  "engines": {
+    "node": ">=4.0.0"
+  },
   "author": "Sung Won Cho <mikeswcho@gmail.com> (https://sungwoncho.io/)",
   "license": "MIT",
   "bugs": {
