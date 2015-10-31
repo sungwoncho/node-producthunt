@@ -18,49 +18,47 @@ describe("notifications", function() {
     Client.prototype.authenticate.restore();
   });
 
-  describe("notifications", function() {
-    describe("#show", function() {
-      it("can be called without options", function(done) {
-        nock('https://api.producthunt.com/v1')
-          .get('/notifications')
-          .reply(200);
+  describe("#show", function() {
+    it("can be called without options", function(done) {
+      nock('https://api.producthunt.com/v1')
+        .get('/notifications')
+        .reply(200);
 
-        notifications.show(function (err, res) {
-          expect(res.statusCode).to.equal(200);
-          done();
-        });
-      });
-
-      it("can be called with params", function(done) {
-        var params = {
-          newer: 1
-        };
-        var options = {
-          params: params
-        };
-
-        nock('https://api.producthunt.com/v1')
-          .get('/notifications')
-          .query(params)
-          .reply(200);
-
-        notifications.show(options, function (err, res) {
-          expect(res.statusCode).to.equal(200);
-          done();
-        });
+      notifications.show(function (err, res) {
+        expect(res.statusCode).to.equal(200);
+        done();
       });
     });
 
-    describe("#destroy", function() {
-      it("is successful", function(done) {
-        nock('https://api.producthunt.com/v1')
-          .delete('/notifications')
-          .reply(200);
+    it("can be called with params", function(done) {
+      var params = {
+        newer: 1
+      };
+      var options = {
+        params: params
+      };
 
-        notifications.destroy(function (err, res) {
-          expect(res.statusCode).to.equal(200);
-          done();
-        });
+      nock('https://api.producthunt.com/v1')
+        .get('/notifications')
+        .query(params)
+        .reply(200);
+
+      notifications.show(options, function (err, res) {
+        expect(res.statusCode).to.equal(200);
+        done();
+      });
+    });
+  });
+
+  describe("#destroy", function() {
+    it("is successful", function(done) {
+      nock('https://api.producthunt.com/v1')
+        .delete('/notifications')
+        .reply(200);
+
+      notifications.destroy(function (err, res) {
+        expect(res.statusCode).to.equal(200);
+        done();
       });
     });
   });
