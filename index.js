@@ -13,6 +13,11 @@ var Client = module.exports = function (config) {
     grant_type: config.grant_type
   };
 
+  if (config.redirect_uri && config.code) {
+    this.credentials.redirect_uri = config.redirect_uri;
+    this.credentials.code = config.code;
+  }
+
   this.constructEndpoint = function(path) {
     var base = `${this.protocol}://${this.host}`;
     var route = `${this.pathPrefix}${path}`;
