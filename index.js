@@ -29,6 +29,7 @@ Client.prototype.setupAPI = function () {
   this.notifications = require(`./api/v${this.version}/notifications`)(this);
   this.votes = require(`./api/v${this.version}/votes`)(this);
   this.settings = require(`./api/v${this.version}/settings`)(this);
+  this.relatedLinks = require(`./api/v${this.version}/related_links`)(this);
 };
 
 Client.prototype.getEndpoint = function(path) {
