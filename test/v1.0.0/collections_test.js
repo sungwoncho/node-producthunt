@@ -25,6 +25,7 @@ describe("collections", function() {
         .reply(200);
 
       collections.index(function (err, res) {
+        expect(err).to.equal(null);
         expect(res.statusCode).to.equal(200);
         done();
       });
