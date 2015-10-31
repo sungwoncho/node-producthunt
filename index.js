@@ -24,6 +24,7 @@ var Client = module.exports = function (config) {
 Client.prototype.setupAPI = function () {
   this.posts = require(`./api/v${this.version}/posts`)(this);
   this.users = require(`./api/v${this.version}/users`)(this);
+  this.collections = require(`./api/v${this.version}/collections`)(this);
 };
 
 Client.prototype.getEndpoint = function(path) {
@@ -104,6 +105,10 @@ Client.prototype.httpGet = function (path, params, done) {
 
 Client.prototype.httpPost = function (path, options, done) {
   this._sendHttpRequest('POST', path, options, done);
+};
+
+Client.prototype.httpPut = function (path, options, done) {
+  this._sendHttpRequest('PUT', path, options, done);
 };
 
 Client.prototype.httpDelete = function (path, options, done) {
