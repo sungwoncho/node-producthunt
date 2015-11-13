@@ -1,6 +1,6 @@
 {
   "name": "producthunt",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "node.js wrapper for the Product Hunt API",
   "main": "index.js",
   "scripts": {
