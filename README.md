@@ -17,7 +17,7 @@ var productHuntAPI = require('producthunt');
 var productHunt = new productHuntAPI({
   client_id: // your client_id
   client_secret: // your client_secret
-  grant_type: // grant_type
+  grant_type: 'client_credentials'
 });
 
 // List all live events and filter by category
