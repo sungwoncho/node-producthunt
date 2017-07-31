@@ -1,5 +1,9 @@
 var request = require('request');
 
+const express = require('express')
+const app = express()
+const port = 3000
+
 var Client = module.exports = function (config) {
   if (! config) config = {};
 
@@ -34,6 +38,7 @@ Client.prototype.setupAPI = function () {
   this.currentUser = require(`./api/v${this.version}/current_user`)(this);
   this.categories = require(`./api/v${this.version}/categories`)(this);
   this.live = require(`./api/v${this.version}/live`)(this);
+  this.topics = require(`./api/v${this.version}/topics`)(this);
 };
 
 Client.prototype.getEndpoint = function(path) {
