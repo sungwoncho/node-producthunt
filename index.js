@@ -1,9 +1,5 @@
 var request = require('request');
 
-const express = require('express')
-const app = express()
-const port = 3000
-
 var Client = module.exports = function (config) {
   if (! config) config = {};
 
